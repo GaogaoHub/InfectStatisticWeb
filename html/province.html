@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/province.css') }}">
     <title>疫情统计</title>
 </head>
 <body>
@@ -30,7 +31,18 @@
                     <h3 class="nowSp">xxx</h3>
                 </div>
             </div>
-    </div>
+            <div id="echarts" class="echarts"></div>
+            <div class="radio">
+                <input type="radio" id="tab-1" name="show" onclick="change_to_sum()" checked/>
+                <input type="radio" id="tab-2" name="show" onclick="change_to_procon()"/>
+                <input type="radio" id="tab-3" name="show" onclick="change_to_cure_dead()"/>
+                <div class="tab">
+                    <label for="tab-1">新增确诊趋势</label>
+                    <label for="tab-2">累计确诊趋势</label>
+                    <label for="tab-3">累计治愈/死亡</label>
+                </div>
+            </div>
+        </div>
         <div class="right-group"></div>
     </div>
 </body>
