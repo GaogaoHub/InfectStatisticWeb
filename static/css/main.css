@@ -5,10 +5,9 @@
 .title {
     margin: 10%;
     text-align: center;
-    background:blue;
 }
 .container{
-    background-color:#10b591;
+    background-color:#a7d7e6;
     position: absolute;
     width: 100%;
     display: flex;
