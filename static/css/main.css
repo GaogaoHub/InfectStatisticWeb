@@ -17,7 +17,7 @@
     text-align: center;
 }
 .mid-group{
-    background:#fff;
+    background:rgb(241, 238, 196);
     flex: 1;
     text-align: center;
     border:1px solid #fff;
@@ -52,7 +52,7 @@
     font-size: small;
 }
 .map {
-    height: 500px;
+    height: 600px;
 }
 .radio {
     margin: 20px;
@@ -65,14 +65,13 @@ input[type=radio] {
     background-color: rgb(196, 194, 194);
     box-shadow: none;
 }
-
 .tab label {
     font-size: 18px;
     cursor: pointer;
     float: left;
     width: 50%;
     text-align: center;
-    padding: 15px 0;
+    padding:15px 0;
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 2px;
