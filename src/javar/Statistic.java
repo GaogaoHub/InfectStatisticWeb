@@ -41,13 +41,7 @@ public class Statistic {
         data.put("浙江", new int[] { 0, 0, 0, 0 });
     }
 
-    public String getdata(String province) {
-        int[] valuetemp = data.get(province);
-        String outline = province;
-        outline = outline + " 感染患者" + valuetemp[0] + "人";
-        outline = outline + " 疑似患者" + valuetemp[1] + "人";
-        outline = outline + " 治愈" + valuetemp[2] + "人";
-        outline = outline + " 死亡" + valuetemp[3] + "人";
-        return outline;
+    public int[] getdata(String province) {
+        return data.get(province);
     }
 }
