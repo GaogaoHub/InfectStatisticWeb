@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css') }}">
+    <link href="../static/css/main.css" rel="stylesheet"/>
     <title>疫情统计可视化页面</title>
 </head>
 <body>
@@ -56,10 +56,8 @@
                 </div>
             </div>
             <div id="echarts" class="map"></div>
-            <div class="part"><h3>国内趋势图</h3></div>
-            <div id="line" class="line"></div>
         </div>
         <div class="right-group"></div>
     </div>
-
+    <script src="../static/js/controller.js"></script>
 </body>
