@@ -1,21 +1,6 @@
 var china = document.getElementById("echarts");
-var china_chart = echarts.init(china);
+ var china_chart = echarts.init(china);
 
-var data = JSON.parse(window.localStorage.getItem('chinadata'));
-var ccon_list = [];//累计数据
-var cnow_list = [];//现存数据
-for(var i=0;i<data["data"].length;i++){
-    var temp = {
-        "name":data["data"][i]["name"],
-        "value":data["data"][i]["con_value"]
-    }//构造符合echarts地图date的键值对
-    var temp2 = {
-        "name":data["data"][i]["name"],
-        "value":data["data"][i]["now_value"]
-    }
-    ccon_list.push(temp);
-    cnow_list.push(temp2);
-}
 var app = {};
 var china_option = {//option
     title: {
@@ -59,9 +44,9 @@ var china_option = {//option
                 color: 'rgb(249, 249, 249)'
             },
             data: 
-                <％out.write(雨欣儿给的函数)％>
-                {name: '北京',value: 5},
-                {name: '天津',value: Math.round(Math.random()*2000)},
+                //<％out.write(雨欣儿给的函数);％>
+                [{name: '北京',value: 5}]
+                /*{name: '天津',value: Math.round(Math.random()*2000)},
                 {name: '上海',value: Math.round(Math.random()*2000)},
                 {name: '重庆',value: Math.round(Math.random()*2000)},
                 {name: '河北',value: 0},
@@ -86,34 +71,25 @@ var china_option = {//option
                 {name: '福建',value: Math.round(Math.random()*2000)},
                 {name: '贵州',value: Math.round(Math.random()*2000)},
                 {name: '广东',value: Math.round(Math.random()*2000)},
-                {name: '青海',value: Math.round(Math.random()*2000)},
-                {name: '西藏',value: Math.round(Math.random()*2000)},
-                {name: '四川',value: Math.round(Math.random()*2000)},
-                {name: '宁夏',value: Math.round(Math.random()*2000)},
-                {name: '海南',value: Math.round(Math.random()*2000)},
-                {name: '台湾',value: Math.round(Math.random()*2000)},
-                {name: '香港',value: Math.round(Math.random()*2000)},
-                {name: '澳门',value: Math.round(Math.random()*2000)}
-            
+                 {name: '青海',value: Math.round(Math.random()*2000)},
+                 {name: '西藏',value: Math.round(Math.random()*2000)},
+                 {name: '四川',value: Math.round(Math.random()*2000)},
+                 {name: '宁夏',value: Math.round(Math.random()*2000)},
+                 {name: '海南',value: Math.round(Math.random()*2000)},
+                 {name: '台湾',value: Math.round(Math.random()*2000)},
+                 {name: '香港',value: Math.round(Math.random()*2000)},
+                 {name: '澳门',value: Math.round(Math.random()*2000)}
+                ]*/
         }
     ]
 };;
-china_chart.setOption(china_option, true);
-china_chart.on("click",function(e) {
-    $.ajax({
-        type:"POST",
-        url: "/post_data",
-        data: JSON.stringify(e.name),
-        contentType: 'application/json; charset=UTF-8',
-        dataType: 'json',
-        success: function(data) {
-            localStorage.clear();
-//            console.log(data);
-            window.localStorage.setItem('initdata',JSON.stringify(data));
-            location.href = 'province?index='+e.name;
-        },
-        error: function(xhr, type) {
-        }
-    });
-})
+
+if (china_option && typeof china_option === "object") {
+    china_chart.setOption(china_option, true);
+}
+
+// china_chart.on("click",function(e) {//跳转
+   
+    
+// })
 
