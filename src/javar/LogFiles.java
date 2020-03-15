@@ -55,6 +55,16 @@ public class LogFiles {
             for (File f : files) {
                 LogFiles.statisFile(f, sta);
             }
+            
+            // 各省数据统计到全国
+            int[] all = { 0, 0, 0, 0 };
+            for (String keytemp : sta.data.keySet()) {
+                int[] valuetemp = sta.data.get(keytemp);
+                for (int i = 0; i < 4; ++i) {
+                    all[i] += valuetemp[i];
+                }
+            }
+            sta.data.put("全国", all);
             return;
         }
         // 非默认日期

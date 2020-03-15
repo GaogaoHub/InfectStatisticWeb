@@ -31,7 +31,7 @@ public class BaseDao {
             // 2 获取数据库连接
             conn = DriverManager.getConnection(URL, USRE, PWD);
         }
-        s=conn.createStatement();
+        s = conn.createStatement();
     }
 
     Boolean existDateTable(String date) throws Exception {
@@ -44,7 +44,7 @@ public class BaseDao {
         }
         s.close();
         conn.close();
-        conn=null;
+        conn = null;
         return false;
     }
 
@@ -65,44 +65,34 @@ public class BaseDao {
 
         // 建表
         getConnection();
-        sql = "CREATE TABLE `"+date+"` (\r\n" + 
-            "  `num` int(10) unsigned NOT NULL AUTO_INCREMENT,\r\n" + 
-            "  `province` varchar(10) CHARACTER SET utf8mb4 DEFAULT '全国',\r\n" + 
-            "  `ip` int(10) unsigned DEFAULT '0',\r\n" + 
-            "  `sp` int(10) unsigned DEFAULT '0',\r\n" + 
-            "  `cure` int(10) unsigned DEFAULT '0',\r\n" + 
-            "  `dead` int(10) unsigned DEFAULT '0',\r\n" + 
-            "  PRIMARY KEY (`num`)\r\n" + 
-            ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        sql = "CREATE TABLE `" + date + "` (\r\n" + "  `num` int(10) unsigned NOT NULL AUTO_INCREMENT,\r\n"
+            + "  `province` varchar(10) CHARACTER SET utf8mb4 DEFAULT '全国',\r\n"
+            + "  `allip` int(10) unsigned DEFAULT '0',\r\n" + "  `nowip` int(10) unsigned DEFAULT '0',\r\n"
+            + "  `sp` int(10) unsigned DEFAULT '0',\r\n" + "  `cure` int(10) unsigned DEFAULT '0',\r\n"
+            + "  `dead` int(10) unsigned DEFAULT '0',\r\n" + "  PRIMARY KEY (`num`)\r\n"
+            + ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         s.executeUpdate(sql);
-        
+
         for (int i = 0; i < provincesort.length; ++i) {
             int[] temp = sta.getdata(provincesort[i]);
-            sql = "INSERT INTO " + date + "(province,ip,sp,cure,dead) VALUES ('" + provincesort[i] + "'," + temp[0]
-                + "," + temp[1] + "," + temp[2] + "," + temp[3] + ")";
+            int allip = temp[0] + temp[2] + temp[3];
+            sql = "INSERT INTO " + date + "(province,allip,nowip,sp,cure,dead) VALUES ('" + provincesort[i] + "',"
+                + allip + ","+ temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ")";
             s.executeUpdate(sql);
         }
         s.close();
         conn.close();
-        conn=null;
+        conn = null;
         return;
     }
-    
-/*    //按日期查询
-    private ResultSet selectDateView(String date) throws Exception {
-        //若表不存在返回null
-        if (!existDateTable(date)) {
-            return null;
-        }
-        getConnection();
-        sql="SELECT * FROM"+date;
-        rs=s.executeQuery(sql);
-        return rs;
-    }
-    
-  //按省份查询
-    private ResultSet selectProvinceView(String province) {
-        
-        return rs;
-    }*/
+
+    /*
+     * //按日期查询 private ResultSet selectDateView(String date) throws Exception {
+     * //若表不存在返回null if (!existDateTable(date)) { return null; } getConnection();
+     * sql="SELECT * FROM"+date; rs=s.executeQuery(sql); return rs; }
+     * 
+     * //按省份查询 private ResultSet selectProvinceView(String province) {
+     * 
+     * return rs; }
+     */
 }
