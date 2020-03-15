@@ -1,3 +1,4 @@
+<%@page import="com.sun.rowset.internal.Row"%>
 <%@page import="javar.BaseDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -8,19 +9,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="../static/css/main.css" rel="stylesheet" />
+
+<link href="main.css" type="text/css" rel="stylesheet" />
 <title>疫情统计可视化页面</title>
 </head>
 <body>
 	<%
 	    BaseDao dao = new BaseDao();
-	    dao.createDateTable("lastdate");
+	    dao.createDateTables("2020-02-02");
 	%>
+
+
 	<sql:setDataSource var="asql" driver="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://localhost:3306/infectprovince" user="root"
 		password="ggsqsjzcmd" />
-	<sql:query dataSource="${asql}" var="resultSet">SELECT * FROM lastdate WHERE province='全国';</sql:query>
-	
+	<sql:query dataSource="${asql}" var="resultSet">
+    	SELECT * FROM `2020-02-02` WHERE num = 1
+	</sql:query>
+
 	<div class="container">
 		<div class="left-group"></div>
 		<div class="mid-group">
@@ -28,58 +34,68 @@
 				<h2>疫情统计可视化页面</h2>
 			</div>
 			<c:forEach var="row" items="${resultSet.rows}">
-			<div class="data">
-				<div class="div-big">
-					<div class="box">
-						<div class="div-small">
-							<p>现有确诊</p>
-							<h3 class="nowSp"><c:out value="${row.ip}"/></h3>
-							<p class="compare">
-								昨日<span class="num">xxx</span>
-							</p>
+				<div class="data">
+					<div class="div-big">
+						<div class="box">
+							<div class="div-small">
+								<p>现有确诊</p>
+								<h3 class="nowSp">
+									<c:out value="${row.nowip}" />
+								</h3>
+								<p class="compare">
+									昨日<span class="num">xxx</span>
+								</p>
+							</div>
+							<div class="div-small">
+								<p>累计确诊</p>
+								<h3 class="nowSp">
+									<c:out value="${row.allip}" />
+								</h3>
+								<p class="compare">
+									昨日<span class="num">xxx</span>
+								</p>
+							</div>
 						</div>
-						<div class="div-small">
-							<p>累计确诊</p>
-							<h3 class="nowSp">xxx</h3>
-							<p class="compare">
-								昨日<span class="num">xxx</span>
-							</p>
+						<div class="box">
+							<div class="div-small">
+								<p>现有疑似</p>
+								<h3 class="nowSp">
+									<c:out value="${row.sp}" />
+								</h3>
+								<p class="compare">
+									昨日<span class="num">xxx</span>
+								</p>
+							</div>
+							<div class="div-small">
+								<p>累计治愈</p>
+								<h3 class="nowSp">
+									<c:out value="${row.cure}" />
+								</h3>
+								<p class="compare">
+									昨日<span class="num">xxx</span>
+								</p>
+							</div>
 						</div>
-					</div>
-					<div class="box">
-						<div class="div-small">
-							<p>现有疑似</p>
-							<h3 class="nowSp"><c:out value="${row.sp}"/></h3>
-							<p class="compare">
-								昨日<span class="num">xxx</span>
-							</p>
-						</div>
-						<div class="div-small">
-							<p>累计治愈</p>
-							<h3 class="nowSp"><c:out value="${row.cure}"/></h3>
-							<p class="compare">
-								昨日<span class="num">xxx</span>
-							</p>
-						</div>
-					</div>
-					<div class="box">
-						<div class="div-small">
-							<p>现有重症</p>
-							<h3 class="nowSp">xxx</h3>
-							<p class="compare">
-								昨日<span class="num">xxx</span>
-							</p>
-						</div>
-						<div class="div-small">
-							<p>累计死亡</p>
-							<h3 class="nowSp"><c:out value="${row.dead}"/></h3>
-							<p class="compare">
-								昨日<span class="num">xxx</span>
-							</p>
+						<div class="box">
+							<div class="div-small">
+								<p>现有重症</p>
+								<h3 class="nowSp">xxx</h3>
+								<p class="compare">
+									昨日<span class="num">xxx</span>
+								</p>
+							</div>
+							<div class="div-small">
+								<p>累计死亡</p>
+								<h3 class="nowSp">
+									<c:out value="${row.dead}" />
+								</h3>
+								<p class="compare">
+									昨日<span class="num">xxx</span>
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			</c:forEach>
 			<div class="radio">
 				<input type="radio" id="tab-1" name="show" onclick="change_to_con()"

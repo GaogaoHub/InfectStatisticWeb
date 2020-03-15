@@ -1,5 +1,6 @@
 package javar;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -34,12 +35,14 @@ public class BaseDao {
         s = conn.createStatement();
     }
 
+    //判断一张表是否存在
     Boolean existDateTable(String date) throws Exception {
         getConnection();
         ResultSet rs = conn.getMetaData().getTables(null, null, date, null);
         if (rs.next()) {
             s.close();
             conn.close();
+            conn=null;
             return true;
         }
         s.close();
@@ -48,22 +51,16 @@ public class BaseDao {
         return false;
     }
 
-    // 创建截止某时期的疫情统计表
-    public void createDateTable(String date) throws Exception {
+    // 根据传入的Statistic 建表 date
+    void createDateTable(String date, Statistic sta) throws Exception {
         // 表是否已经存在
         if (existDateTable(date)) {
             return;
         }
-
-        // 数据读取
-        LogFiles logs = new LogFiles("D:\\logs");
-        Statistic sta = new Statistic();
+        // 建表
         String[] provincesort = { "全国", "安徽", "北京", "重庆", "福建", "甘肃", "广东", "广西", "贵州", "海南", "河北", "河南", "黑龙江", "湖北",
             "湖南", "江西", "吉林", "江苏", "辽宁", "内蒙古", "宁夏", "青海", "山西", "山东", "陕西", "上海", "四川", "天津", "西藏", "新疆", "云南",
             "浙江" };
-        logs.readFiles(date, sta);
-
-        // 建表
         getConnection();
         sql = "CREATE TABLE `" + date + "` (\r\n" + "  `num` int(10) unsigned NOT NULL AUTO_INCREMENT,\r\n"
             + "  `province` varchar(10) CHARACTER SET utf8mb4 DEFAULT '全国',\r\n"
@@ -76,13 +73,32 @@ public class BaseDao {
         for (int i = 0; i < provincesort.length; ++i) {
             int[] temp = sta.getdata(provincesort[i]);
             int allip = temp[0] + temp[2] + temp[3];
-            sql = "INSERT INTO " + date + "(province,allip,nowip,sp,cure,dead) VALUES ('" + provincesort[i] + "',"
-                + allip + ","+ temp[0] + "," + temp[1] + "," + temp[2] + "," + temp[3] + ")";
+            sql = "INSERT INTO `" + date + "` (`province`, `allip`, `nowip`, `sp`, `cure`, `dead`) VALUES ('"
+                + provincesort[i] + "', '" + allip + "', '"+temp[0]+"', '"+temp[1]+"', '"+temp[2]+"', '"+temp[3]+"')";
             s.executeUpdate(sql);
         }
         s.close();
         conn.close();
         conn = null;
+        return;
+    }
+
+    // 创建截止某时期的数个疫情统计表
+    public void createDateTables(String date) throws Exception {
+
+        // 数据读取
+        LogFiles logs = new LogFiles("D:\\logs");
+        Statistic sta = new Statistic();
+        String tableName;
+
+        for (File f : logs.files) {
+            tableName = f.getName().substring(0, 10);
+            LogFiles.statisFile(f, sta);
+            createDateTable(tableName, sta);
+            if (tableName.equals(date)) {
+                break;
+            }
+        }
         return;
     }
 
