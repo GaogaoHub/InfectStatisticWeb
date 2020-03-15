@@ -4,6 +4,10 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.gson.Gson;
 
 import java.sql.ResultSet;
 
@@ -140,8 +144,6 @@ public class BaseDao {
     
     public ProvinceByDate searchProvinceByDate(String province) throws Exception {
         ProvinceByDate pbd=new ProvinceByDate(province);
-        String date;
-        int[] tmp= {0,0,0,0,0};
         
         getConnection();
         sql="SELECT * FROM `"+province+"`";
@@ -149,18 +151,42 @@ public class BaseDao {
         
         rs.beforeFirst();
         while(rs.next()) {
-            date=rs.getString("date");
+            String date=rs.getString("date");
+            int[] tmp= {0,0,0,0,0};
             tmp[0]=rs.getInt("allip");
             tmp[1]=rs.getInt("nowip");
             tmp[2]=rs.getInt("sp");
             tmp[3]=rs.getInt("cure");
             tmp[4]=rs.getInt("dead");
-            pbd.put(date, tmp);
+            pbd.add(date, tmp);
         }
         
         closeConnection();
         return pbd;
     }
+    
+    public String searchNowipByProvince(String date) throws Exception {
+        getConnection();
+        sql="SELECT\r\n" + 
+            "`2020-01-19`.allip,\r\n" + 
+            "`2020-01-19`.province\r\n" + 
+            "FROM `"+date+"`";
+        rs=s.executeQuery(sql);
+        Map<String,Integer> map=new HashMap<String, Integer>();
+        
+        rs.beforeFirst();
+        while(rs.next()) {
+            String province=rs.getString("province");
+            Integer nowip=rs.getInt("nowip");
+            map.put(province, nowip);
+        }
+        closeConnection();
+        
+        Gson gson=new Gson();
+        String result=gson.toJson(map);
+        return result;
+    }
+    
     /*
      * //按日期查询 private ResultSet selectDateView(String date) throws Exception {
      * //若表不存在返回null if (!existDateTable(date)) { return null; } getConnection();
