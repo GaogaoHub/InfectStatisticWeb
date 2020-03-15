@@ -16,7 +16,7 @@
 <body>
 	<%
 	    BaseDao dao = new BaseDao();
-	    dao.createDateTables("2020-02-02");
+	    dao.createTables("D://logs");
 	%>
 
 
