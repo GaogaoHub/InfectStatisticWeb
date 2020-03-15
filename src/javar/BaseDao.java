@@ -59,10 +59,6 @@ public class BaseDao {
 
     // 根据传入的Statistic 建表 date
     void createDateTable(String date, Statistic sta) throws Exception {
-        // 表是否已经存在
-        if (existDateTable(date)) {
-            return;
-        }
         // 建表
         getConnection();
         sql = "CREATE TABLE `" + date + "` (\r\n" + "  `num` int(10) unsigned NOT NULL AUTO_INCREMENT,\r\n"
@@ -98,6 +94,9 @@ public class BaseDao {
         for (File f : logs.files) {
             tableName = f.getName().substring(0, 10);
             LogFiles.statisFile(f, sta);
+            if(existDateTable(tableName)) {
+                continue;
+            }
             createDateTable(tableName, sta);
             updateProvinceTables(tableName,sta);
         }
@@ -137,6 +136,30 @@ public class BaseDao {
         }
         closeConnection();
         return;
+    }
+    
+    public ProvinceByDate searchProvinceByDate(String province) throws Exception {
+        ProvinceByDate pbd=new ProvinceByDate(province);
+        String date;
+        int[] tmp= {0,0,0,0,0};
+        
+        getConnection();
+        sql="SELECT * FROM `"+province+"`";
+        rs=s.executeQuery(sql);
+        
+        rs.beforeFirst();
+        while(rs.next()) {
+            date=rs.getString("date");
+            tmp[0]=rs.getInt("allip");
+            tmp[1]=rs.getInt("nowip");
+            tmp[2]=rs.getInt("sp");
+            tmp[3]=rs.getInt("cure");
+            tmp[4]=rs.getInt("dead");
+            pbd.put(date, tmp);
+        }
+        
+        closeConnection();
+        return pbd;
     }
     /*
      * //按日期查询 private ResultSet selectDateView(String date) throws Exception {
