@@ -1,14 +1,21 @@
+READ ME
 
 ##作业链接
+
 [作业描述](https://edu.cnblogs.com/campus/fzu/2020SpringW/homework/10456)
+
 [作业链接点这](https://www.cnblogs.com/GaogaoBlog/p/12503929.html)
+
 ##结对学号
+
 - 221701409,221701306
 
 ##项目介绍
+
 - 对结对第一次作业的原型进行实现，采用JSP框架，使用了Mysql数据库，用JSON传数据
 
 ##项目如何构建和运行
+
 1.  JSP环境（eclipse）
 [这是搭建环境的过程](https://www.cnblogs.com/GaogaoBlog/p/12483813.html)
 
