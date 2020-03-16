@@ -168,8 +168,8 @@ public class BaseDao {
     public String searchNowipByProvince(String date) throws Exception {
         getConnection();
         sql="SELECT\r\n" + 
-            "`2020-01-19`.allip,\r\n" + 
-            "`2020-01-19`.province\r\n" + 
+            "nowip,\r\n" + 
+            "province\r\n" + 
             "FROM `"+date+"`";
         rs=s.executeQuery(sql);
         Map<String,Integer> map=new HashMap<String, Integer>();
@@ -181,11 +181,23 @@ public class BaseDao {
             map.put(province, nowip);
         }
         closeConnection();
-        
-        Gson gson=new Gson();
-        String result=gson.toJson(map);
+        map.remove("全国");
+        String result=BaseDao.MaptoJson(map);
         return result;
     }
+    
+    static String MaptoJson(Map<String, Integer> map) {
+        String result="[";
+        String tmp;
+        for(String key:map.keySet()) {
+            tmp="{ name: '"+key+"',value: "+map.get(key).toString()+"}";
+            result=result+tmp+",";
+        }
+        result=result.substring(0, result.length()-1);
+        result+="]";
+        return result;
+    }
+    
     
     /*
      * //按日期查询 private ResultSet selectDateView(String date) throws Exception {
