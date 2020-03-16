@@ -52,12 +52,10 @@
     font-size: small;
 }
 .map {
-    height:600px;
-    margin:100px 0px;
-    top:50px;
+    height: 600px;
 }
 .radio {
-    margin: 40px;
+    margin: 20px;
 }
 input[type=radio] {
     display: none;
