@@ -1,5 +1,5 @@
 var china = document.getElementById("echarts");
- var china_chart = echarts.init(china);
+var china_chart = echarts.init(china);
 
 var app = {};
 var china_option = {//option
@@ -88,8 +88,11 @@ if (china_option && typeof china_option === "object") {
     china_chart.setOption(china_option, true);
 }
 
-// china_chart.on("click",function(e) {//跳转
-   
+china_chart.on("click",function(e) {//跳转
+   //console.log(e);
+   location.href='province.html';//要跳转的页面地址
+   window.localStorage.setItem('province'.JSON.stringify( ));//数据 代号加json字符串
+   window.open()//打开另一个
     
-// })
+})
 
