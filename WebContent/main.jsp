@@ -125,6 +125,9 @@
 				</div>
 			</div>
 			<div id="echarts" class="map"></div>
+			<form name="frmApp" action="province.jsp" id="frmAppId" mothed="post">
+                <input id="test" type="hidden" name="test">
+            </form>
 		</div>
 		<div class="right-group"></div>
 	</div>
@@ -138,7 +141,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
 	<script>
 	var china = document.getElementById("echarts");
-	 var china_chart = echarts.init(china);
+	var china_chart = echarts.init(china);
 
 	var app = {};
 	var china_option = {//option
@@ -159,7 +162,7 @@
 	        pieces: [
 	            {min: 1000,color: '#5A1D07 '},
 	            {min: 600, max: 1000,color: '   #A7340E'},
-	            {min: 200, max: 600 ,color: '   #EB4E18'},
+	            {min: 200, max: 600 ,color: '   #C94518'},
 	            {min: 50, max: 300, color: ' #F28E6C'},
 	            {max: 50, color: '#F8C1AF'}
 	        ],
@@ -179,17 +182,36 @@
 	            mapType: 'china',
 	            roam: false,
 	            label: {
-	                show: false
+	                show: false,
+	                color: 'rgb(249, 249, 249)'
 	            },
 	            data: 
 	                <% out.write(dao.searchNowipByProvince("2020-02-02"));%>  
 	        }
 	    ]
 	};;
-
+	
+	
 	if (china_option && typeof china_option === "object") {
 	    china_chart.setOption(china_option, true);
 	}
+	
+	china_chart.on("click",function(e) {//跳转
+		   //console.log(e);
+		    var tmp=setItemValue(JSON.stringify(e.name));
+		    submit();
+		    location.href='province.jsp?test='+e.name;//要跳转的页面地址		   //window.open()//打开另一个
+		})
+
+		function setItemValue(tmp){
+		    document.getElementById("test").value = tmp;  // 将JS变量值存储到隐藏控件中
+		}
+
+		function submit(){
+		    var frm = document.getElementById("frmAppId"); // 获取表单
+		    frm.submit(); // 对表单进行提交
+		}
 	</script>
+
 </body>
 </html>

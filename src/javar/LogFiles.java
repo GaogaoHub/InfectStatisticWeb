@@ -57,10 +57,10 @@ public class LogFiles {
             }
             
             // 各省数据统计到全国
-            int[] all = { 0, 0, 0, 0 };
+            int[] all = {0, 0, 0, 0, 0 };
             for (String keytemp : sta.data.keySet()) {
                 int[] valuetemp = sta.data.get(keytemp);
-                for (int i = 0; i < 4; ++i) {
+                for (int i = 0; i < 5; ++i) {
                     all[i] += valuetemp[i];
                 }
             }
@@ -77,10 +77,10 @@ public class LogFiles {
         }
 
         // 各省数据统计到全国
-        int[] all = { 0, 0, 0, 0 };
+        int[] all = {0, 0, 0, 0, 0 };
         for (String keytemp : sta.data.keySet()) {
             int[] valuetemp = sta.data.get(keytemp);
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 5; ++i) {
                 all[i] += valuetemp[i];
             }
         }
@@ -88,7 +88,11 @@ public class LogFiles {
     }
 
     // 统计某个日志文件的数据
-    static void statisFile(File f, Statistic sta) {
+    public static void statisFile(File f, Statistic sta) {
+        //读每个日志前 今日新增清0
+        for(String keytemp:sta.data.keySet()) {
+            (sta.data.get(keytemp))[4]=0;
+        }
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
             String line;
@@ -100,6 +104,17 @@ public class LogFiles {
                 LogFiles.statisLine(line, sta);
             }
             br.close();
+            
+            // 各省数据统计到全国
+            int[] all = { 0,0, 0, 0, 0 };
+            for (String keytemp : sta.data.keySet()) {
+                int[] valuetemp = sta.data.get(keytemp);
+                for (int i = 0; i < 5; ++i) {
+                    all[i] += valuetemp[i];
+                }
+            }
+            sta.data.put("全国", all);
+            
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -117,6 +132,7 @@ public class LogFiles {
         case "新增":
             if (strs[2].equals("感染患者")) {
                 sta.data.get(strs[0])[0] += Integer.parseInt(strs[3].replace("人", ""));
+                sta.data.get(strs[0])[4]+=Integer.parseInt(strs[3].replace("人", ""));
                 break;
             }
             if (strs[2].equals("疑似患者")) {
@@ -142,12 +158,14 @@ public class LogFiles {
             }
             if (strs[2].equals("确诊感染")) {
                 sta.data.get(strs[0])[1] -= Integer.parseInt(strs[3].replace("人", ""));
+                sta.data.get(strs[0])[4]+=Integer.parseInt(strs[3].replace("人", ""));
                 sta.data.get(strs[0])[0] += Integer.parseInt(strs[3].replace("人", ""));
             }
             break;
         case "感染患者":
             if (strs[2].equals("流入")) {
                 sta.data.get(strs[0])[0] -= Integer.parseInt(strs[4].replace("人", ""));
+                sta.data.get(strs[3])[4]+=Integer.parseInt(strs[3].replace("人", ""));
                 sta.data.get(strs[3])[0] += Integer.parseInt(strs[4].replace("人", ""));
             }
             break;

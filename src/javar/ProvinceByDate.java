@@ -12,7 +12,7 @@ public class ProvinceByDate {
         data = new HashMap<String, int[]>();
     }
     
-    public void put(String date,int[] tmp) {
+    public void add(String date,int[] tmp) {
         data.put(date, tmp);
         return;
     }
